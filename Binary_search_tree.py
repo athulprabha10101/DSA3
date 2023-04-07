@@ -76,6 +76,8 @@ class Bs_tree:
                 self.insert_recur(current.right, new_node)
 
     def insert2(self, value):
+        if self.root is None:
+            self.root = Node(value)
         self.insert_recur2(self.root, value)
 
     def insert_recur2(self, current, value):
