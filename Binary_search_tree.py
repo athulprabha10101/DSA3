@@ -39,19 +39,6 @@ class Bs_tree:
             else:
                 return True
         return False
-    #
-    # def contains(self, value):
-    #     return self.contains_recur(self.root, value)
-    #
-    # def contains_recur(self, current_node, value):
-    #     if current_node is None:
-    #         return False
-    #     if value == current_node.value:
-    #         return True
-    #     if value < current_node.value:
-    #         return self.contains_recur(current_node.left, value)
-    #     else:
-    #         return self.contains_recur(current_node.right, value)
 
     def contains(self, value):
         return self.contains_recur(self.root, value)
@@ -61,28 +48,16 @@ class Bs_tree:
             return False
         elif value == current.value:
             return True
-        elif value < current:
+        elif value < current.value:
             return self.contains_recur(current.left, value)
         elif value > current.value:
             return self.contains_recur(current.right, value)
 
-
-
     def insert(self, value):
-        if self.root is None:
-            self.root = Node(value)
-        self.insert_recur(self.root, value)
-
-    def insert_recur(self, current, value):
-        if current is None:
-            return Node(value)
-        if value < current.value:
-            current.left = self.insert_recur(current.left, value)
-        if value > current.value:
-            current.right = self.insert_recur(current.right, value)
-
-    def insert(self, value):
-        new_node = Node(value)
+        if self.contains(value):
+            return True
+        else:
+            new_node = Node(value)
         if self.root is None:
             self.root = new_node
         else:
@@ -99,13 +74,26 @@ class Bs_tree:
                 current.right = new_node
             else:
                 self.insert_recur(current.right, new_node)
-bstr = Bs_tree()
-bstr.insert(47)
-bstr.insert(21)
-bstr.insert(76)
-bstr.insert(18)
-bstr.insert(27)
-bstr.insert(52)
-bstr.insert(82)
 
-print(bstr.contains(47))
+    def insert2(self, value):
+        self.insert_recur2(self.root, value)
+
+    def insert_recur2(self, current, value):
+        if current is None:
+            return Node(value)
+        '''The function returns a new node to left or right given below when the when the recursion reaches None 
+        recursively'''
+        if value < current.value:
+            current.left = self.insert_recur2(current.left, value)
+
+        ''' the current node at the level is returned recursively till the root and is returned to the recur function which does not use it, the purpose is to pop the root call form the callstack '''
+        if value > current.value:
+            current.right = self.insert_recur2(current.right, value)
+        return current
+        ''' code is not required for when value == current.value as the code will return current node and the root call will be popped'''
+
+
+bstr = Bs_tree()
+bstr.insert(3)
+bstr.insert(2)
+print(bstr.root.left.value)
