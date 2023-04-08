@@ -126,19 +126,43 @@ class Bs_tree:
         else: # before this is for cases are for if the value is not in the tree, from here we look for the value
             if current.left is None and current.right is None: # is a leaf node
                 return None # returns none to either of the 2 recursive calls above setting node to None or deleting it
-            elif current.left is not None: # there are sub elements on the right after x node
+            elif current.left is None: # there are sub elements on the right after x node
                 current = current.right # sends .left to earlier recursive call deleting the node and joining right to left
-            elif current.right is not None:
-                current = current.left
+            elif current.right is None:
+                current = current.cleft
             else: # x node has subtrees on left and right
                 sub_min = self.min_value(current.right) # finds min value in right subtree
                 current.value = sub_min.value # sets min value as current node's value
                 current.right = self.delete_recur(current.right, sub_min.value) # deletes the min node in right
         return True
 
+    def breadth_first_search(self):
+        current = self.root
+        queue = []
+        results = []
+        queue.append(current)
 
+        while len(queue) > 0:
+            current = queue.pop(0)
+            results.append(current.value)
+            if current.left is not None:
+                queue.append(current.left)
+            if current.right is not None:
+                queue.append(current.right)
+        return results
 
-# TESTS
+    def dfs_pre_order(self):
+        results = []
+
+        def traverse(current):
+            results.append(current.value)
+            if current.left is not None:
+                traverse(current.left)
+            if current.right is not None:
+                traverse(current.right)
+        traverse(self.root)
+        return results
+
 
 bstr = Bs_tree()
 bstr.insert(50)
@@ -154,4 +178,14 @@ print("Root.<- left ", bstr.root.left.value)
 print("Root.right -> ", bstr.root.right.value)
 print("Minimum value = ",(bstr.min_value(bstr.root)).value)
 print("Maximum value = ", (bstr.max_value(bstr.root)).value)
+print("<------>")
 
+bstr2 = Bs_tree()
+bstr2.insert2(47)
+bstr2.insert2(21)
+bstr2.insert2(76)
+bstr2.insert2(18)
+bstr2.insert2(27)
+bstr2.insert2(52)
+bstr2.insert2(82)
+print(bstr2.breadth_first_search())
