@@ -151,6 +151,7 @@ class Bs_tree:
                 queue.append(current.right)
         return results
 
+
     def dfs_pre_order(self):
         results = []
 
