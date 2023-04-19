@@ -163,6 +163,42 @@ class Bs_tree:
         traverse(self.root)
         return results
 
+    def dfs_post_order(self):
+        results = []
+
+        def traverse(current):
+            if current.left is not None:
+                traverse(current.left)
+            if current.right is not None:
+                traverse(current.right)
+            results.append(current.value)
+        traverse(self.root)
+        return results
+
+    def dfs_inorder(self):
+        results = []
+
+        def traverse(current):
+            if current.left is not None:
+                traverse(current.left)
+            results.append(current.value)
+            if current.right is not None:
+                traverse(current.right)
+        traverse(self.root)
+        return results
+
+    def is_valid_tree(self):
+        return self.recur_is_valid_tree(self.root, float("-inf"), float("+inf"))
+
+    def recur_is_valid_tree(self, current, min, max):
+        if current is None:
+            return True
+        if current.value <= min or current.value >= max:
+            return False
+        return (self.recur_is_valid_tree(current.left, min, current.value) and
+                self.recur_is_valid_tree(current.right, current.value, max))
+
+
 
 bstr = Bs_tree()
 bstr.insert(50)
@@ -189,3 +225,18 @@ bstr2.insert2(27)
 bstr2.insert2(52)
 bstr2.insert2(82)
 print(bstr2.breadth_first_search())
+print("post order", bstr2.dfs_post_order())
+print("pre - order bst2", bstr2.dfs_pre_order())
+print("in-order", bstr2.dfs_inorder())
+
+bstr3 = Bs_tree()
+bstr3.insert(15)
+bstr3.insert(9)
+bstr3.insert(20)
+bstr3.insert(8)
+bstr3.insert(10)
+bstr3.insert(18)
+bstr3.insert(21)
+
+print(bstr3.dfs_inorder())
+print(bstr.is_valid_tree())
